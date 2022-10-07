@@ -1,0 +1,17 @@
+---
+- name: Adding new SecoundaryGroups to the managed hosts
+  hosts: servera,serverb
+  vars:
+    SecoundaryGroups:
+      - testgroup1
+      - testgroup2
+      - testgroup3
+      - testgroup4
+      - testgroup5
+
+  tasks:
+    - name: creating SecoundaryGroups
+      group:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ SecoundaryGroups }}"

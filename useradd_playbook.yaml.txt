@@ -1,0 +1,24 @@
+---
+- name: Creating User Accounts on the Mananed Hosts
+  hosts: servera,serverb
+  become: true
+  vars:
+    user_details:
+      - { name: testuser1, uid: 10001, password: testuser1, SecoundaryGroups: "testgroup2,testgroup1,testgroup3,testgroup4,testgroup5" }
+      - { name: testuser2, uid: 10002, password: testuser2, SecoundaryGroups: "testgroup2,testgroup1,testgroup3,testgroup4,testgroup5" }
+      - { name: testuser3, uid: 10003, password: testuser3, SecoundaryGroups: "testgroup2,testgroup1,testgroup3,testgroup4,testgroup5" }
+      - { name: testuser4, uid: 10004, password: testuser4, SecoundaryGroups: "testgroup2,testgroup1,testgroup3,testgroup4,testgroup5" }
+      - { name: testuser5, uid: 10005, password: testuser5, SecoundaryGroups: "testgroup2,testgroup1,testgroup3,testgroup4,testgroup5" }
+
+
+  tasks:
+
+    - name:
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        state: present
+        password: "{{ item.password | password_hash('sha512') }}"
+        groups: "{{ item.SecoundaryGroups }}"
+        append: true
+      with_items: "{{ user_details }}"

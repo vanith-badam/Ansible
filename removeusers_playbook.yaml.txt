@@ -1,0 +1,17 @@
+---
+- name: Revoming the user accounts
+  hosts: servera,serverb
+  vars:
+    users:
+      - testuser1
+      - testuser2
+      - testuser3
+      - testuser4
+      - testuser5
+  tasks:
+    - name: remove the user account
+      user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      with_items: "{{ users }}"
